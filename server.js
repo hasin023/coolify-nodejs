@@ -4,7 +4,7 @@ const app = express()
 const cors = require("cors")
 
 // PORT
-const PORT = process.env.APP_PORT
+const PORT = process.env.APP_PORT || 3000
 
 // Middleware
 app.use(cors())
@@ -12,25 +12,44 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // Static Data
-const users = require("./models/users")
-const messages = require("./models/messages")
+const { mahin, nahiyan, tushar } = require("./models/messages")
 
 // Routes
-app.get("/api/v1", (req, res) => {
-  res.json({ message: "Welcome to the Coolify API" })
+app.get("/", (req, res) => {
+  res.json({ message: "Goodbye fuked up World 🌍" })
 })
 
-app.get("/api/v1/users", (req, res) => {
+app.get("/api", (req, res) => {
+  res.json({ message: "Welcome to this useless API ✅" })
+})
+
+app.get("/api/tushar", (req, res) => {
   res.json({
-    message: "List of all users",
-    users,
+    message: "Messages for Tushar Bhaii 🍣",
+    messages: tushar,
   })
 })
 
-app.get("/api/v1/messages", (req, res) => {
+app.get("/api/mahin", (req, res) => {
   res.json({
-    message: "List of all messages",
-    messages,
+    message: "Messages for Mahin 🔥🔥",
+    messages: mahin,
+  })
+})
+
+app.get("/api/nahiyan", (req, res) => {
+  res.json({
+    message: "Messages for Nahiyan 🌈🌈",
+    messages: nahiyan,
+  })
+})
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).json({
+    message: "Something went wrong!",
+    error: err.message,
   })
 })
 
